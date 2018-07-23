@@ -15,7 +15,7 @@ router.route('/data')
 
     mysql.createConnection({
       multipleStatements: true,
-      host: process.env.SQL_URI || 'localhost',
+      host: 'wftuqljwesiffol6.cbetxkdyhwsb.us-east-1.rds.amazonaws.com' || 'localhost',
       user: 'root',
       password: 'password',
       database: 'alitu'
