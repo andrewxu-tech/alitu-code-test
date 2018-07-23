@@ -12,16 +12,21 @@ router.route('/data')
   .get((req, res) => {
 
     const resultingOutput = {};
-    // console.log(process.env.JAWSDB_URL);
+
+    let deployedDBURL = null;
+    if (process.env.JAWSDB_URL) {
+      deployedDBURL = process.env.JAWSDB_URL + '?allowMultiQueries=true';
+    }
+
     mysql.createConnection(
-      process.env.JAWSDB_URL + '?allowMultiQueries=true' || {
+      deployedDBURL || {
         multipleStatements: true,
         host: 'localhost',
         user: 'root',
         password: 'password',
         database: 'alitu'
       }).then(connection => {
-      connection.query('SELECT * FROM episodes; SELECT * FROM files', (error, results) => {
+      connection.query('SELECT * FROM episodes; SELECT * FROM files;', (error, results) => {
         if (error) throw error;
 
         // I've used moment.js throughout to calculate anything that's date-related.
