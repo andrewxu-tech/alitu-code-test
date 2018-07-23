@@ -15,7 +15,7 @@ router.route('/data')
 
     mysql.createConnection({
       multipleStatements: true,
-      host: 'localhost',
+      host: process.env.SQL_URI || 'localhost',
       user: 'root',
       password: 'password',
       database: 'alitu'
@@ -88,7 +88,7 @@ router.route('/data')
 
         // average number of recordings per episode over last 7 days
         let lastWeekTotalRecordings = 0;
-        resultingOutput.recordingsPerEpisode7Days = results[0]
+        results[0]
           .filter(episode => {
             if (moment(episode.created_at).isAfter(moment().subtract(30, 'd'))) {
               return episode;
@@ -108,7 +108,7 @@ router.route('/data')
           }).length;
 
         let last30DaysTotalRecordings = 0;
-        resultingOutput.recordingsPerEpisode7Days = results[0]
+        results[0]
           .filter(episode => {
             if (moment(episode.created_at).isAfter(moment().subtract(30, 'd'))) {
               return episode;
