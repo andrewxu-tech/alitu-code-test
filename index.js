@@ -12,9 +12,9 @@ router.route('/data')
   .get((req, res) => {
 
     const resultingOutput = {};
-    console.log(process.env.JAWSDB_URL);
+    // console.log(process.env.JAWSDB_URL);
     mysql.createConnection(
-      process.env.JAWSDB_URL || {
+      process.env.JAWSDB_URL + '?allowMultiQueries=true' || {
         multipleStatements: true,
         host: 'localhost',
         user: 'root',
