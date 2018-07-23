@@ -16,9 +16,9 @@ router.route('/data')
     mysql.createConnection({
       multipleStatements: true,
       host: 'wftuqljwesiffol6.cbetxkdyhwsb.us-east-1.rds.amazonaws.com' || 'localhost',
-      user: 'root',
-      password: 'password',
-      database: 'alitu'
+      user: 'g4hxdbo0grw4z5gu' || 'root',
+      password: 'mjnq5p9jju02okdl' || 'password',
+      database: 'ub5bab81bp97lzm2' || 'alitu'
     }).then(connection => {
       connection.query('SELECT * FROM episodes; SELECT * FROM files', (error, results) => {
         if (error) throw error;
