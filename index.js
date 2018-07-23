@@ -12,14 +12,15 @@ router.route('/data')
   .get((req, res) => {
 
     const resultingOutput = {};
-
-    mysql.createConnection({
-      multipleStatements: true,
-      host: 'wftuqljwesiffol6.cbetxkdyhwsb.us-east-1.rds.amazonaws.com' || 'localhost',
-      user: 'g4hxdbo0grw4z5gu' || 'root',
-      password: 'mjnq5p9jju02okdl' || 'password',
-      database: 'ub5bab81bp97lzm2' || 'alitu'
-    }).then(connection => {
+    console.log(process.env.JAWSDB_URL);
+    mysql.createConnection(
+      process.env.JAWSDB_URL || {
+        multipleStatements: true,
+        host: 'localhost',
+        user: 'root',
+        password: 'password',
+        database: 'alitu'
+      }).then(connection => {
       connection.query('SELECT * FROM episodes; SELECT * FROM files', (error, results) => {
         if (error) throw error;
 
