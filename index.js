@@ -13,19 +13,26 @@ router.route('/data')
 
     const resultingOutput = {};
 
-    let deployedDBURL = null;
+    let dbsettings = null;
     if (process.env.JAWSDB_URL) {
-      deployedDBURL = process.env.JAWSDB_URL + '?allowMultiQueries=true';
-    }
-
-    mysql.createConnection(
-      deployedDBURL || {
+      dbsettings = {
+        multipleStatements: true,
+        host: 'wftuqljwesiffol6.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+        user: 'g4hxdbo0grw4z5gu',
+        password: 'mjnq5p9jju02okdl',
+        database: 'ub5bab81bp97lzm2'
+      };
+    } else {
+      dbsettings = {
         multipleStatements: true,
         host: 'localhost',
         user: 'root',
         password: 'password',
         database: 'alitu'
-      }).then(connection => {
+      };
+    }
+
+    mysql.createConnection(dbsettings).then(connection => {
       connection.query('SELECT * FROM episodes; SELECT * FROM files;', (error, results) => {
         if (error) throw error;
 
