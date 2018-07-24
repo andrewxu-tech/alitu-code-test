@@ -14,9 +14,12 @@ router.route('/data')
     const resultingOutput = {};
 
     let dbsettings = null;
+
+    // Checking if there is a JAWSDB_URL - this is for the JawsDB used when deploying to Heroku.
     if (process.env.JAWSDB_URL) {
       dbsettings = {
         multipleStatements: true,
+        // The details of the JawsDB database I made.
         host: 'wftuqljwesiffol6.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
         user: 'g4hxdbo0grw4z5gu',
         password: 'mjnq5p9jju02okdl',
@@ -27,8 +30,8 @@ router.route('/data')
         multipleStatements: true,
         host: 'localhost',
         user: 'root',
-        password: 'password',
-        database: 'alitu'
+        password: 'password', // or whatever your actual password is.
+        database: 'alitu' // or whatever the actual name of the database is.
       };
     }
 
@@ -36,13 +39,12 @@ router.route('/data')
       connection.query('SELECT * FROM episodes; SELECT * FROM files;', (error, results) => {
         if (error) throw error;
 
-        // I've used moment.js throughout to calculate anything that's date-related.
-
         // Total number of episodes created
         resultingOutput.episodesCreated = results[0].length;
 
         // Number of episodes created in the last week
         resultingOutput.lastWeekEpisodes = results[0].filter(episode => {
+          // I've used moment.js throughout to calculate anything that's date-related.
           if (moment(episode.created_at).isAfter(moment().subtract(1, 'w'))) {
             return episode;
           }
@@ -71,9 +73,10 @@ router.route('/data')
               lastWeekTotalFileSize += Number(JSON.parse(file.codecInformation).format.size);
             } catch (error) {
               // console.log('That file has an invalid JSON string: ', error);
+              // Some of the JSON strings for `codecInformation` seem to have unexpected tokens in them - I've ignored them here.
             }
           });
-        resultingOutput.lastWeekFileSize = Math.round(lastWeekTotalFileSize / resultingOutput.lastWeekFiles) / 1000000 + ' MB';
+        resultingOutput.lastWeekFileSize = Math.round(lastWeekTotalFileSize / resultingOutput.lastWeekFiles) / 1000000 + ' MB'; // Assuming the size was given in bytes
 
         // average file size uploaded over last 30 days
         let last30DaysTotalFileSize = 0;
@@ -95,9 +98,10 @@ router.route('/data')
               last30DaysTotalFileSize += Number(JSON.parse(file.codecInformation).format.size);
             } catch (error) {
               // console.log('That file has an invalid JSON string: ', error);
+              // Some of the JSON strings for `codecInformation` seem to have unexpected tokens in them - I've ignored them here.
             }
           });
-        resultingOutput.last30DaysFileSize = Math.round(last30DaysTotalFileSize / last30DaysFiles) / 1000000 + ' MB';
+        resultingOutput.last30DaysFileSize = Math.round(last30DaysTotalFileSize / last30DaysFiles) / 1000000 + ' MB'; // Assuming the size was given in bytes
 
         // average number of recordings per episode over last 7 days
         let lastWeekTotalRecordings = 0;
